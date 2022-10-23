@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Synthe</title>
+</head>
+<body>
+
+    <ul id="messages"></ul>
+    <form id="form" action="">
+        <label for="input"></label>
+        <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+
+        let socket = io();
+        const form = document.getElementById('form');
+        const input = document.getElementById('input');
+
+        socket.on("connect", () => { //Log de connexion (console du node)
+            socket.emit('connexion', 'back');
+        });
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (input.value) {
+                socket.emit('BackToServer', input.value);
+                input.value = '';
+            }
+        });
+    </script>
+
+</body>
+</html>
