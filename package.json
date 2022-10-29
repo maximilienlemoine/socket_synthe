@@ -1,0 +1,27 @@
+{
+  "name": "socket_synthe",
+  "version": "1.0.0",
+  "description": "API synthé pour la webtv",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maximilienlemoine/socket_synthe.git"
+  },
+  "author": "Smash",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maximilienlemoine/socket_synthe/issues"
+  },
+  "homepage": "https://github.com/maximilienlemoine/socket_synthe#readme",
+  "dependencies": {
+    "bootstrap": "^5.2.2",
+    "express": "^4.18.2",
+    "jquery": "^3.6.1",
+    "jsdom": "^20.0.1",
+    "serve-favicon": "^2.5.0",
+    "socket.io": "^4.5.3"
+  }
+}
