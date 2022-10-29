@@ -33,6 +33,7 @@ io.on('connection', (socket) =>{ //Récupération des connexions des interfaces 
             console.log('Back send : ' + info);
 
             socket.broadcast.emit('ServerToFront', info); //Envoie des informations au front par le serveur
+            console.log('Server emit : ' + info)
         });
     })
 });
