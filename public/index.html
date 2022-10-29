@@ -13,8 +13,8 @@
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="../node_modules/jquery/dist/jquery.min.js"></script>
-<script src="../node_modules/jquery-ui/dist/jquery-ui.min.js"></script>
+<script src="./jquery.min.js"></script>
+<script src="./jquery-ui.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function (){
 
@@ -22,7 +22,6 @@
 
         socket.on("connect", () => { //Log de connexion (console du node)
             socket.emit('connexion', 'front');
-            console.log('Good')
 
             socket.on('ServerToFront', (info) => {
                 console.log('message reçu : ' + info)
