@@ -12,6 +12,7 @@ const io = require('socket.io')(server, { cors: {
 app.use(express.static(path.join(__dirname, "node_modules/bootstrap/dist/")));
 app.use(express.static(path.join(__dirname, "node_modules/jquery/dist/")));
 app.use(express.static(path.join(__dirname, "node_modules/jquery-ui/dist/")));
+app.use(express.static(path.join(__dirname, "public/asset/")));
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 app.get('/', (req, res) => {
