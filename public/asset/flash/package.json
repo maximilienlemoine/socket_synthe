@@ -1,0 +1,15 @@
+{
+  "name": "notify",
+  "version": "1.0.0",
+  "description": "Vanilla JavaScript message notification",
+  "main": "index.js",
+  "scripts": {
+    "minify": "cleancss -o assets/notify.min.css assets/notify.css; uglifyjs assets/notify.js -o assets/notify.min.js --compress --mangle"
+  },
+  "author": "azzalfauzi",
+  "license": "MIT",
+  "devDependencies": {
+    "clean-css-cli": "4.3.0",
+    "uglify-js": "3.7.5"
+  }
+}

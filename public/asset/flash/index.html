@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Notify Demo</title>
+    <style>
+      /* DEMO ONLY */
+      body {
+        font-family: sans-serif;
+        color: hsl(0, 0%, 40%);
+      }
+      .container {
+        width: 400px;
+        margin: 3rem auto;
+      }
+
+      .function {
+        line-height: 1.6;
+        margin-bottom: 1rem;
+      }
+
+      .property {
+        line-height: 1.2;
+        margin: 6px 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>NOTIFY</h1>
+      <p>Vanilla JavaScript message notification</p>
+      <h2>DEMO</h2>
+      <div class="function">
+        notify(
+        <div class="options">
+          <div class="property">
+            <label>
+              message:"<input type="text" maxlength="20" id="message"  style="width:200px" value="Your notification here" />",
+              </label>
+          </div>
+          <div class="property">
+            <label>
+              color:"<select type="text" maxlength="20" id="color"><option value="default"></option><option value="success" selected>success</option><option value="danger">danger</option></select>",
+            </label>
+          </div>
+          <div class="property">
+              <label>
+                timeout:<input type="number" maxlength="5" id="timeout" value="3000" style="width:60px" />,
+              </label>
+            </div>
+          </div>
+        );
+      </div>
+      <button id="run">RUN</button>
+    </div>
+
+    <script>
+    // DEMO ONLY
+    document.querySelector('#run').addEventListener('click', function() {
+      var options = {
+        message: document.querySelector('#message').value,
+        color: document.querySelector('#color').value,
+        timeout: document.querySelector('#timeout').value,
+      };
+
+      notify(options);
+    });
+    </script>
+
+    <link rel="stylesheet" href="./assets/notify.min.css" />
+    <script src="./assets/notify.min.js"></script>
+  </body>
+</html>
