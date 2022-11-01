@@ -18,10 +18,11 @@
 <script type="text/javascript">
     $(document).ready(function (){
 
+        let token =  Math.random().toString(36).substr(2);// Génaration d'un token a la connexion.
         let socket = io();
 
         socket.on("connect", () => { //Log de connexion (console du node)
-            socket.emit('connexion', 'front');
+            socket.emit('connexion', 'front (' + token + ')');
 
             socket.on('ServerToFront', (info) => {
                 console.log('message reçu : ' + info)

@@ -33,7 +33,7 @@ io.on('connection', (socket) =>{ //Récupération des connexions des interfaces 
             console.log(datetime.getHours() + ' : ' + datetime.getMinutes() + ' | Interface '+ loca + ' déconnecté pour : ' + reason+'.')
         })
 
-        socket.on('BackToServer', (info) => { //récupération des informaions par le serveur du back
+        socket.on('BackToServer', (info) => { //récupération des informations par le serveur du back
             console.log('Back send : ' + info);
 
             socket.broadcast.emit('ServerToFront', info); //Envoie des informations au front par le serveur
