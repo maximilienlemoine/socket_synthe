@@ -8,9 +8,8 @@
     <title>Synthé Front</title>
 </head>
 <body>
-<div class="message">
-
-</div>
+<div class="message"></div>
+<div class="commentaire"></div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="./jquery.min.js"></script>
@@ -24,9 +23,14 @@
         socket.on("connect", () => { //Log de connexion (console du node)
             socket.emit('connexion', 'front (' + token + ')');
 
-            socket.on('ServerToFront', (info) => {
-                console.log('message reçu : ' + info)
-                $('.message').append(info);
+            socket.on('ServerToFront', (transmis) => {
+                console.log('Transmission')
+
+                //TODO Test des informations puis envoie
+                if (transmis.action === "titreLance") $('.message').html(transmis.info).show()
+                if (transmis.action === "titreRentre") $('.message').html(transmis.info).hide()
+                if (transmis.action === "comLance") $('.commentaire').html(transmis.info).show()
+                if (transmis.action === "comRentre") $('.commentaire').html(transmis.info).hide()
             });
         });
     });

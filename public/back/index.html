@@ -24,10 +24,26 @@
                 </div>
                 <div class="card col-sm-5">
                     <div class="card-body d-flex flex-column">
-                        <h3 class="card-title">Description</h3>
-                        <input type="text" name="" id="">
+                        <h3 class="card-title">Commentaire</h3>
+                        <input type="text" name="commentaire" id="commentaire">
                         <button id="comShow" class="btn btn-success mt-3"><i class="bi bi-arrow-right-square-fill"></i> Lancer</button>
                         <button id="comHide" class="btn btn-danger mt-3 hide"><i class="bi bi-arrow-left-square-fill"></i> Rentrer</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row m-lg-3 gap-lg-5 d-flex justify-content-center">
+                <div class="card col-sm-5">
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="card-title">Timer</h3>
+                        <div class='temps'>00:00</div>
+                        <input type="number" id="timeInit" placeholder="Minutes uniquement">
+                        <div>
+                            <button id="timePlay" class="btn btn-success mt-3"><i class="bi bi-play-fill"></i> Play</button>
+                            <button id="timePause" class="btn btn-danger mt-3 hide"><i class="bi bi-pause-fill"></i> Pause</button>
+                            <button id="timeHide" class="btn btn-danger mt-3 hide"><i class="bi bi-eye-slash-fill"></i> Cacher</button>
+                            <button id="timeShow" class="btn btn-success mt-3"><i class="bi bi-eye-fill"></i> Montrer</button>
+                            <button id="timeClear" class="btn btn-dark mt-3"><i class="bi bi-trash-fill"></i> Clear</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,24 +69,137 @@
             socket.emit('connexion', 'back (' + token + ')');
         });
 
+        //TODO Initialisation variables
+        var minute='', seconde=1, tempo=0, temps='', timer=''
 
+        //TODO TITRE
         $('#titreShow').click(function(){
             if ($("#titre").val()==='') {
-                flashError('Veuillez remplir le champs !')
+                flashError('Veuillez remplir le champ !')
             }else {
                 flashSuccess('Titre transmit au serveur')
-                socket.emit("BackToServer", { 'action':'titrelance', 'info':$("#titre").val()})
+                socket.emit("BackToServer", { 'action':'titreLance', 'info':$("#titre").val()})
                 $('#titreShow').hide()
                 $('#titreHide').show()
             }
         })
         $('#titreHide').click(function(){
             flashSuccess('Affichage désactivé')
-            socket.emit("BackToServer", { 'action':'titrerentre', 'info':''})
+            socket.emit("BackToServer", { 'action':'titreRentre', 'info':''})
             $('#titreHide').hide()
             $('#titreShow').show()
         })
 
+        //TODO Description
+        $('#comShow').click(function(){
+            if ($("#commentaire").val()==='') {
+                flashError('Veuillez remplir le champ !')
+            }else {
+                flashSuccess('Descriptions transmise au serveur')
+                socket.emit("BackToServer", { 'action':'comLance', 'info':$("#commentaire").val()})
+                $('#comShow').hide()
+                $('#comHide').show()
+            }
+        })
+        $('#comHide').click(function(){
+            flashSuccess('Affichage désactivé')
+            socket.emit("BackToServer", { 'action':'comRentre', 'info':''})
+            $('#comHide').hide()
+            $('#comShow').show()
+        })
+
+        //TODO Timer
+        $('#timePlay').click(function(){
+            if (tempo!=3){
+                if ($("#timeInit").val()==""){
+                    flashError('Vous n\'avez pas rentré de valeur');
+                } else {
+                    if (tempo!=1){
+                        flashSuccess("Le décompte ")
+                        tempo=1
+                        if (temps==''){
+                            minute = $("#timeInit").val()
+
+                            socket.emit("BackToServer",{'action':'timeShow', 't':''})
+                            timer = setInterval(function(){
+                                if (tempo==1){
+                                    seconde--
+                                    if (seconde<10){
+                                        seconde = "0" + seconde
+                                    }
+                                    temps = minute +':'+ seconde
+                                    $('.temps').html(temps)
+                                    socket.emit("BackToServer", {'action':3, 't':temps})
+                                    if (seconde==0){
+                                        seconde=59
+                                        minute--
+                                        if (minute<10){
+                                            minute = "0" + minute
+                                        }
+                                        if (minute<=0 + seconde==0){
+                                            tempo=3
+                                            socket.emit("BackToServer",{'action':'timeHide', 't':''})
+                                        }
+                                        temps = minute +':'+ seconde
+                                        $('.temps').html(temps)
+                                        socket.emit("BackToServer", {'action':3, 't':temps})
+                                    }
+                                }
+                            },1000)
+                        }
+                        $('#timePlay').hide()
+                        $('#timePause').show()
+                    }
+                }
+            }
+        })
+
+        $('#timeClear').click(function(){
+            clearInterval(timer)
+            tempo = 0;
+            minute = 0;
+            seconde = 1;
+            temps = '';
+            $('.temps').html('00:00')
+            socket.emit("BackToServer",{'action':'timeHide', 't':''})
+            $('#timePause').hide()
+            $('#timePlay').show()
+            $('#timeShow').hide()
+            $('#timeHide').show()
+        })
+
+        $('#timePause').click(function(){
+            if (tempo!=3){
+                tempo=0
+                $('#timePause').hide()
+                $('#timePlay').show()
+            } else{
+                $('#timePause').hide()
+                $('#timePlay').show()
+            }
+        })
+
+        $('#timeHide').click(function(){
+            if (tempo!=3){
+                if ($("#tini").val()!==""){
+                    tempo=2
+                    socket.emit("BackToServer",{'action':'timeHide', 't':''})
+                    $('#timeHide').hide()
+                    $('#timeShow').show()
+                }
+            }
+        })
+
+        $('#timeShow').click(function(){
+            if (tempo!==3){
+                tempo=1
+                socket.emit("BackToServer",{'action':'timeShow', 't':''})
+                $('#timeShow').hide()
+                $('#timeHide').show()
+            }
+        })
+
+        //TODO FlashMessage
         function flashError(message){
             notify({
                 message: message,
