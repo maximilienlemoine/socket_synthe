@@ -6,10 +6,16 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Synthé Front</title>
+    <style>
+        *{
+            color: white;
+        }
+    </style>
 </head>
 <body>
 <div class="message"></div>
-<div class="commentaire"></div>
+<div class="commentaire">
+<div class="time"></div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="./jquery.min.js"></script>
@@ -27,10 +33,13 @@
                 console.log('Transmission')
 
                 //TODO Test des informations puis envoie
-                if (transmis.action === "titreLance") $('.message').html(transmis.info).show()
+                if (transmis.action === "titreLance") $('.message').html(transmis.info).effect('slide', { direction: "left" }, 1000);
                 if (transmis.action === "titreRentre") $('.message').html(transmis.info).hide()
                 if (transmis.action === "comLance") $('.commentaire').html(transmis.info).show()
                 if (transmis.action === "comRentre") $('.commentaire').html(transmis.info).hide()
+                if (transmis.action === "timeShow") $('.time').show()
+                if (transmis.action === "timeHide") $('.time').hide()
+                if (transmis.action === "timeUpdate") $('.time').html(transmis.t)
             });
         });
     });

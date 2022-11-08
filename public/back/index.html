@@ -40,8 +40,8 @@
                         <div>
                             <button id="timePlay" class="btn btn-success mt-3"><i class="bi bi-play-fill"></i> Play</button>
                             <button id="timePause" class="btn btn-danger mt-3 hide"><i class="bi bi-pause-fill"></i> Pause</button>
-                            <button id="timeHide" class="btn btn-danger mt-3 hide"><i class="bi bi-eye-slash-fill"></i> Cacher</button>
-                            <button id="timeShow" class="btn btn-success mt-3"><i class="bi bi-eye-fill"></i> Montrer</button>
+                            <button id="timeHide" class="btn btn-danger mt-3"><i class="bi bi-eye-slash-fill"></i> Cacher</button>
+                            <button id="timeShow" class="btn btn-success mt-3 hide"><i class="bi bi-eye-fill"></i> Montrer</button>
                             <button id="timeClear" class="btn btn-dark mt-3"><i class="bi bi-trash-fill"></i> Clear</button>
                         </div>
                     </div>
@@ -120,7 +120,8 @@
                         if (temps==''){
                             minute = $("#timeInit").val()
 
-                            socket.emit("BackToServer",{'action':'timeShow', 't':''})
+                            socket.emit("BackToServer",{'action':'timeShow'})
+                            socket.emit("BackToServer",{'action':'timeUpdate', 't':''})
                             timer = setInterval(function(){
                                 if (tempo==1){
                                     seconde--
@@ -129,7 +130,7 @@
                                     }
                                     temps = minute +':'+ seconde
                                     $('.temps').html(temps)
-                                    socket.emit("BackToServer", {'action':3, 't':temps})
+                                    socket.emit("BackToServer", {'action' : 'timeUpdate', 't':temps})
                                     if (seconde==0){
                                         seconde=59
                                         minute--
@@ -138,11 +139,12 @@
                                         }
                                         if (minute<=0 + seconde==0){
                                             tempo=3
-                                            socket.emit("BackToServer",{'action':'timeHide', 't':''})
+                                            socket.emit("BackToServer",{'action':'timeHide'})
+                                            socket.emit("BackToServer",{'action':'timeUpdate', 't':''})
                                         }
                                         temps = minute +':'+ seconde
                                         $('.temps').html(temps)
-                                        socket.emit("BackToServer", {'action':3, 't':temps})
+                                        socket.emit("BackToServer", {'action': 'timeUpdate', 't':temps})
                                     }
                                 }
                             },1000)
@@ -161,7 +163,8 @@
             seconde = 1;
             temps = '';
             $('.temps').html('00:00')
-            socket.emit("BackToServer",{'action':'timeHide', 't':''})
+            socket.emit("BackToServer",{'action':'timeHide'})
+            socket.emit("BackToServer",{'action':'timeUpdate', 't':''})
             $('#timePause').hide()
             $('#timePlay').show()
             $('#timeShow').hide()
@@ -169,14 +172,11 @@
         })
 
         $('#timePause').click(function(){
-            if (tempo!=3){
-                tempo=0
-                $('#timePause').hide()
-                $('#timePlay').show()
-            } else{
-                $('#timePause').hide()
-                $('#timePlay').show()
+            if (tempo!=3) {
+                tempo = 0
             }
+            $('#timePause').hide()
+            $('#timePlay').show()
         })
 
         $('#timeHide').click(function(){
@@ -184,8 +184,13 @@
                 if ($("#tini").val()!==""){
                     tempo=2
                     socket.emit("BackToServer",{'action':'timeHide', 't':''})
-                    $('#timeHide').hide()
-                    $('#timeShow').show()
+                }
+                $('#timeHide').hide()
+                $('#timeShow').show()
+
+                if ($('#timePause').is(':visible')){
+                    $('#timePause').hide()
+                    $('#timePlay').show()
                 }
             }
         })
@@ -196,6 +201,10 @@
                 socket.emit("BackToServer",{'action':'timeShow', 't':''})
                 $('#timeShow').hide()
                 $('#timeHide').show()
+                if ($('#timePlay').is(':visible')){
+                    $('#timePlay').hide()
+                    $('#timePause').show()
+                }
             }
         })
 
